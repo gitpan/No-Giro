@@ -1,0 +1,11 @@
+Revision history for Perl extension No::Giro.
+
+0.01  Thu Mar 25 10:55:51 2004
+	- original version; created by h2xs 1.23 with options
+		-AX -b 5.6.0 -n No::Giro
+	- An internal proof-of-concept pre-alpha.
+
+0.02  2004-04-27 22:52
+	- Somewhat more elaborate first release uploaded to CPAN. Does
+	the things the author has to give priority. See inline POD for
+	details. 
