@@ -8,7 +8,7 @@ use PostScript::Simple;
 use Carp;
 our $AUTOLOAD;  # it's a package global
 
-our $VERSION = '0.2';
+our $VERSION = '0.21';
 
 
 
@@ -272,7 +272,7 @@ L<PostScript::Simple>, L<No::OCRData>.
 
 =head1 AUTHOR
 
-Kjetil Kjernsmo, kk@kjernsmo.net. You may use English or Norwegian if you write me about this module. 
+Kjetil Kjernsmo, kjetilk@cpan.org. You may use English or Norwegian if you write me about this module. 
 
 =head1 COPYRIGHT AND LICENSE
 

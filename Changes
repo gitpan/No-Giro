@@ -25,3 +25,6 @@ Revision history for Perl extension No::Giro.
 	decimal number. They are then entered in a more appropriate
 	way in the form. 
 	- Corrected a few more typos... 
+
+0.21  2004-08-21 00:55
+	- Added SIGNATURE and some related small changes
