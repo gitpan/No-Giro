@@ -8,7 +8,7 @@ use PostScript::Simple;
 use Carp;
 our $AUTOLOAD;  # it's a package global
 
-our $VERSION = '0.11';
+our $VERSION = '0.2';
 
 
 
@@ -46,7 +46,7 @@ used in a Postscript document, which again is suitable to be printed.
 
 =head2 Data Methods
 
-This are the accessor methods, they serve only the purpose of setting and retrieving the values of the data fields of the object. 
+These are the accessor methods, they serve only the purpose of setting and retrieving the values of the data fields of the object. 
 
 These methods have Norwegian-looking names, except for that they are abbreviations and has not Norwegian characters, so I suppose you need to be Norwegian to understand them, or grab someone who is... 
 
@@ -68,6 +68,12 @@ Name and address of the person or institution making the payment. It is an array
 
 Name and address of the person or institution getting the payment. Like above, it is an array where each element representing a line. 
 
+=item C<betinf()>
+
+Payment information. This field can contain comments without any particular semantics. It is an array of strings, where each element represents an array. Each element should not exceed 40 characters, but only a warning is issued if it does.
+
+
+
 =item C<kid()>
 
 The customer identification number, or KID. You need agreements with the banking system to actually use this meaningfully. There are constraints on length of numbers and how they are to be computed. Contact your bank for details if you plan to use this. 
@@ -78,13 +84,9 @@ The account number to be credited.
 
 
 
-=item C<betkont()>
+=item C<betkonto()>
 
-Does nothing. 
-
-=item C<betinf()>
-
-Does nothing.
+The account number of the payer.
 
 
 =item C<belkonto()>
@@ -102,8 +104,8 @@ Does nothing.
   
 my %fields = (
 	      belop => undef,
-	      betkont => undef,
-	      betinf => undef,
+	      betkonto => undef,
+	      betinf => [],
 	      frist => undef,
 	      betav => [],
 	      bettil => [],
@@ -139,6 +141,7 @@ sub new {
 }
 
 
+
 # Uhm, because of my autoload method, I don't know what to do with the destructor, so I just do this....:
 sub DESTROY { # Do nothing 
 }
@@ -154,11 +157,21 @@ sub AUTOLOAD {
 	croak "Can't access `$name' field in class $type";
     }
     if (@_) {
-	return $self->{$name} = shift;
+      my $entry = shift;
+      if ($name eq 'betinf') {
+	my $i=1;
+	foreach my $line (@{$entry}) {
+	  if (length($line) > 40) {
+	    carp("Length of line $i in betinf() is longer than 40 characters. This is discouraged");
+	    $i++;
+	  }
+	}
+      }
+      return $self->{$name} = $entry;
     } else {
-	return $self->{$name};
+      return $self->{$name};
     }
-}
+  }
 
 =item C<eps>
 
@@ -175,19 +188,34 @@ sub eps {
 				     eps => 1,
 				     units => "pt");
 
-    
-    $eps->setfont("Courier-iso", 5);
+    my $kroner = int($self->{belop}); 
+    my $ore = int(($self->{belop} - $kroner) * 100);
+
+    $eps->setfont("Courier-iso", 4);
     
     $eps->text(1.8,    21.5, 'H');
     $eps->text(20,     21.5, $self->{kid});
-    $eps->text(90,     21.5, $self->{belop});
+    $eps->text(86,     21.5, $kroner);
+    if ($ore > 0) {
+      $eps->text(108,  21.5, $ore);
+    }
     $eps->text(132,    21.5, $self->{tilkonto});
- 
+    $eps->text(86,     106,  $self->{belop});
+    $eps->text(132,    106,  $self->{betkonto});
+
+    if($self->{betinf}) {
+	my $feed = 93; 
+	foreach my $line (@{$self->{betinf}}) {
+	    $eps->text(15, $feed, $line);
+	    $feed-=4;
+	}
+    }
+
     if($self->{bettil}) {
 	my $feed = 60; 
 	foreach my $line (@{$self->{bettil}}) {
 	    $eps->text(115, $feed, $line);
-	    $feed-=5;
+	    $feed-=4;
 	}
     }
 
@@ -195,7 +223,7 @@ sub eps {
 	my $feed = 60; 
 	foreach my $line (@{$self->{betav}}) {
 	    $eps->text(15, $feed, $line);
-	    $feed-=5;
+	    $feed-=4;
 	}
     }
     
@@ -216,7 +244,9 @@ __END__
 This is an early release, mostly thrown together to meet the needs of
 the author. As is seen from the method documentation, it has methods
 to set all sensible fields, but not all of them are implemented to
-print anything.
+print anything. The fields that are unimplemented in this release are
+both something that very few issuers of these slips would ever need to
+do, and this module addresses their concerns mainly.
 
 The standard strongly recommends the use of the ISO OCR B font for the
 fields that are to be OCRed, allthough Courier is also supported. 
