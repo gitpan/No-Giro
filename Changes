@@ -14,3 +14,7 @@ Revision history for Perl extension No::Giro.
 	- Better tested.
 	- Setting font to Courier-iso instead, can't get OCRB to work.
 	- A few typos.
+
+0.11  2004-05-13 18:04
+	- Corrected some errors in the POD markup.
+	- Now in production at my site!

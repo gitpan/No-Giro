@@ -8,7 +8,7 @@ use PostScript::Simple;
 use Carp;
 our $AUTOLOAD;  # it's a package global
 
-our $VERSION = '0.1';
+our $VERSION = '0.11';
 
 
 
@@ -220,12 +220,6 @@ print anything.
 
 The standard strongly recommends the use of the ISO OCR B font for the
 fields that are to be OCRed, allthough Courier is also supported. 
-#I
-#have hardcoded "OCRB" as the font name right now, but this is
-#apparently not reliable, as it hasn't worked for me even on systems
-#with the font installed. Improving the font support is a priority in
-#future versions. I'm currently not aware of a free source of the OCRB
-#font.
 I haven't got OCRB to work, even on a machine that has it, so for now, Courier-iso has been hardcoded as the font to use.
 
 Internally, I have noted some problems with the measuring units, but
@@ -248,7 +242,7 @@ L<PostScript::Simple>, L<No::OCRData>.
 
 =head1 AUTHOR
 
-Kjetil Kjernsmo, E<lt>kk@kjernsmo.net<gt>. You may use English or Norwegian if you write me about this module. 
+Kjetil Kjernsmo, kk@kjernsmo.net. You may use English or Norwegian if you write me about this module. 
 
 =head1 COPYRIGHT AND LICENSE
 
