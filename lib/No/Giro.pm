@@ -8,7 +8,7 @@ use PostScript::Simple;
 use Carp;
 our $AUTOLOAD;  # it's a package global
 
-our $VERSION = '0.02';
+our $VERSION = '0.1';
 
 
 
@@ -54,15 +54,7 @@ These methods have Norwegian-looking names, except for that they are abbreviatio
 
 =item C<belop()>
 
-The amount of money to be payed. 
-
-=item C<betkont()>
-
-Does nothing. 
-
-=item C<betinf()>
-
-Does nothing.
+The amount of money to be paid. 
 
 =item C<frist()>
 
@@ -76,10 +68,6 @@ Name and address of the person or institution making the payment. It is an array
 
 Name and address of the person or institution getting the payment. Like above, it is an array where each element representing a line. 
 
-=item C<belkonto()>
-
-Does nothing. 
-
 =item C<kid()>
 
 The customer identification number, or KID. You need agreements with the banking system to actually use this meaningfully. There are constraints on length of numbers and how they are to be computed. Contact your bank for details if you plan to use this. 
@@ -88,6 +76,20 @@ The customer identification number, or KID. You need agreements with the banking
 
 The account number to be credited. 
 
+
+
+=item C<betkont()>
+
+Does nothing. 
+
+=item C<betinf()>
+
+Does nothing.
+
+
+=item C<belkonto()>
+
+Does nothing. 
 
 =item C<kvittering()>
 
@@ -160,7 +162,7 @@ sub AUTOLOAD {
 
 =item C<eps>
 
-This method uses whatever data that has been previously set by the date methods, and puts them in appropriate positions, and returns a L<PostScript::Simple::EPS> object. You may then use this object to import in a L<PostScript::Simple> document, save it to a file or whatever. Just remember that it has to be imported at the very bottom of the an A4 page. 
+This method uses whatever data that has been previously set by the data methods, and puts them in appropriate positions, and returns a L<PostScript::Simple::EPS> object. You may then use this object to import in a L<PostScript::Simple> document, save it to a file or whatever. Just remember that it has to be imported at the very bottom of the an A4 page. 
 
 =cut
 
@@ -174,7 +176,7 @@ sub eps {
 				     units => "pt");
 
     
-    $eps->setfont("OCRB", 5);
+    $eps->setfont("Courier-iso", 5);
     
     $eps->text(1.8,    21.5, 'H');
     $eps->text(20,     21.5, $self->{kid});
@@ -217,13 +219,14 @@ to set all sensible fields, but not all of them are implemented to
 print anything.
 
 The standard strongly recommends the use of the ISO OCR B font for the
-fields that are to be OCRed, allthough Courier is also supported. I
-have hardcoded "OCRB" as the font name right now, but this is
-apparently not reliable, as it hasn't worked for me even on systems
-with the font installed. Improving the font support is a priority in
-future versions. I'm currently not aware of a free source of the OCRB
-font.
-
+fields that are to be OCRed, allthough Courier is also supported. 
+#I
+#have hardcoded "OCRB" as the font name right now, but this is
+#apparently not reliable, as it hasn't worked for me even on systems
+#with the font installed. Improving the font support is a priority in
+#future versions. I'm currently not aware of a free source of the OCRB
+#font.
+I haven't got OCRB to work, even on a machine that has it, so for now, Courier-iso has been hardcoded as the font to use.
 
 Internally, I have noted some problems with the measuring units, but
 right now it "works for me" and I have little time to grok the

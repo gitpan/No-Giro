@@ -9,3 +9,8 @@ Revision history for Perl extension No::Giro.
 	- Somewhat more elaborate first release uploaded to CPAN. Does
 	the things the author has to give priority. See inline POD for
 	details. 
+
+0.1   2004-05-13 15:02
+	- Better tested.
+	- Setting font to Courier-iso instead, can't get OCRB to work.
+	- A few typos.
